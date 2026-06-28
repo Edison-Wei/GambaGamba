@@ -74,34 +74,50 @@ def merge_datasets(force = False):
 
     all_images = sorted(list(img_dir.glob("*.jpg")))
 
-    n = len(all_images)
+    # Place all the real playing card dataset into test
+    for img_file in all_images:
+        shutil.copy(
+            img_file,
+            ROOT / "images" / "test" / f"real_{img_file.name}"
+        )
 
-    train_end = int(0.8 * n)
-    val_end = int(0.9 * n)
+        label_file = lbl_dir / (img_file.stem + ".txt")
 
-    splits = {
-        "train": all_images[:train_end],
-        "val": all_images[train_end:val_end],
-        "test": all_images[val_end:]
-    }
-
-    for split, images in splits.items():
-
-        for img_file in images:
+        if label_file.exists():
 
             shutil.copy(
-                img_file,
-                ROOT / "images" / split / f"real_{img_file.name}"
+                label_file,
+                ROOT / "labels" / "test" / f"real_{label_file.name}"
             )
 
-            label_file = lbl_dir / (img_file.stem + ".txt")
+    ## Uncomment the following to have a split dataset
+    # n = len(all_images)
+    # train_end = int(0.8 * n)
+    # val_end = int(0.9 * n)
 
-            if label_file.exists():
+    # splits = {
+    #     "train": all_images[:train_end],
+    #     "val": all_images[train_end:val_end],
+    #     "test": all_images[val_end:]
+    # }
 
-                shutil.copy(
-                    label_file,
-                    ROOT / "labels" / split / f"real_{label_file.name}"
-                )
+    # for split, images in splits.items():
+
+    #     for img_file in images:
+
+    #         shutil.copy(
+    #             img_file,
+    #             ROOT / "images" / split / f"real_{img_file.name}"
+    #         )
+
+    #         label_file = lbl_dir / (img_file.stem + ".txt")
+
+    #         if label_file.exists():
+
+    #             shutil.copy(
+    #                 label_file,
+    #                 ROOT / "labels" / split / f"real_{label_file.name}"
+    #             )
 
     print("Dataset merged successfully.")
 
