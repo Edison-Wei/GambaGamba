@@ -1,0 +1,8 @@
+python==3.12
+tqdm==4.67.3
+torch==2.10.0
+ultralytics==8.4.14
+mss==10.1.0
+
+
+pygame==2.2.0
